@@ -17,7 +17,7 @@ const lookup = async (requestItem: requestItem) => {
     await page.getByLabel('Password').fill(process.env.PASSWORD);
     await page.getByRole('button', { name: 'Log in' }).click();
     try {
-        console.log(`Processing copy request for: ${requestItem.course} (${requestItem.cf_course_id}/${requestItem.cf_term_id})`);
+        console.log(`Processing copy request for: ${requestItem.course} (${requestItem.cf_course_id}/${requestItem.cf_term_id}) with source: ${requestItem.source_course_id}`);
         await page.goto(`https://brightspace.cuny.edu/d2l/home/${requestItem.org_id}`);
         await page.getByRole('button', { name: 'Tools', exact: true }).click();
         await page.getByRole('link', { name: 'Course Admin' }).click();
@@ -31,6 +31,7 @@ const lookup = async (requestItem: requestItem) => {
         await page1.frameLocator('internal:attr=[title="Body"i]').getByRole('radio').first().check();
         await page1.frameLocator('internal:attr=[title="Footer"i]').getByRole('button', { name: 'Add Selected' }).click();
         await page.waitForTimeout(25000);
+
 
         const result: resultRecord = {
             request: requestItem,
